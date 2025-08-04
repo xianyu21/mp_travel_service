@@ -44,7 +44,7 @@ const userStore = useUserStore()
             客服
           </text>
         </view>
-        <view class="flex flex-col items-center">
+        <view class="flex flex-col items-center" @click="go('packages/mine/information_edit')">
           <image src="@img/img-016.png" mode="scaleToFill" class="h-[41.86rpx] w-[46.77rpx]" />
           <text class="mt-[10rpx] text-[22rpx] text-[#747474]">
             设置
@@ -61,7 +61,7 @@ const userStore = useUserStore()
           </text>
           <image src="@img/img-009.png" mode="scaleToFill" class="ml-[10rpx] h-[16.12rpx] w-[25.1rpx]" />
         </view>
-        <text class="mt-[14rpx] text-[54rpx] font-bold">
+        <text class="mt-[14rpx] text-[54rpx] font-bold" @click="go('/packages/mine/balance')">
           15635.00
         </text>
         <view class="mt-[24rpx] flex items-center justify-between text-[24rpx]">
@@ -94,19 +94,19 @@ const userStore = useUserStore()
         我的服务
       </view>
       <view class="grid grid-cols-[repeat(4,auto)] grid-rows-[repeat(2,auto)] mt-[50rpx] gap-[50rpx]">
-        <view class="flex flex-col items-center">
+        <view class="flex flex-col items-center" @click="go('/packages/mine/share')">
           <image src="@img/img-010.png" mode="scaleToFill" class="h-[48rpx] w-[46rpx]" />
           <text class="mt-[10rpx] text-[24rpx] text-[#000000]">
             推广赚钱
           </text>
         </view>
-        <view class="flex flex-col items-center">
+        <view class="flex flex-col items-center" @click="go('/packages/mine/bank_management')">
           <image src="@img/img-011.png" mode="scaleToFill" class="h-[48rpx] w-[46rpx]" />
           <text class="mt-[10rpx] text-[24rpx] text-[#000000]">
             银行卡管理
           </text>
         </view>
-        <view class="flex flex-col items-center">
+        <view class="flex flex-col items-center" @click="go('/packages/mine/entry_information')">
           <image src="@img/img-012.png" mode="scaleToFill" class="h-[48rpx] w-[46rpx]" />
           <text class="mt-[10rpx] text-[24rpx] text-[#000000]">
             入驻资料

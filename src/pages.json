@@ -212,6 +212,14 @@
           }
         },
         {
+          "path": "apply_withdrawal_succeed",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        },
+        {
           "path": "balance",
           "type": "page",
           "layout": "default",
@@ -221,7 +229,11 @@
         },
         {
           "path": "bank_edit",
-          "type": "page"
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": "银行卡"
+          }
         },
         {
           "path": "bank_management",
@@ -241,7 +253,11 @@
         },
         {
           "path": "information_edit",
-          "type": "page"
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": "编辑资料"
+          }
         },
         {
           "path": "setting",
@@ -265,6 +281,19 @@
           "layout": "default",
           "style": {
             "navigationBarTitleText": "推广海报"
+          }
+        }
+      ]
+    },
+    {
+      "root": "packages/order",
+      "pages": [
+        {
+          "path": "details",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": "订单详情"
           }
         }
       ]

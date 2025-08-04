@@ -60,7 +60,7 @@ export default ({ command, mode }) => {
     plugins: [
       UniPages({
         exclude: ['**/components/**/**.*'],
-        subPackages: ['src/packages/public', 'src/packages/home', 'src/packages/mine', 'src/packages/news'],
+        subPackages: ['src/packages/public', 'src/packages/home', 'src/packages/mine', 'src/packages/news', 'src/packages/order'],
         dts: 'src/types/uni-pages.d.ts',
       }),
       UniLayouts(),
