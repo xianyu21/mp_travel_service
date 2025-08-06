@@ -64,7 +64,7 @@
       "type": "home",
       "layout": "default",
       "style": {
-        "navigationBarTitleText": "首页"
+        "navigationStyle": "custom"
       }
     },
     {
@@ -89,6 +89,14 @@
       "layout": "default",
       "style": {
         "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "pages/travel",
+      "type": "page",
+      "layout": "default",
+      "style": {
+        "navigationStyle": "custom"
       }
     },
     {
@@ -130,6 +138,14 @@
       "root": "packages/public",
       "pages": [
         {
+          "path": "login",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": "登录"
+          }
+        },
+        {
           "path": "rich_text",
           "type": "page",
           "layout": "default",
@@ -151,27 +167,35 @@
       "root": "packages/home",
       "pages": [
         {
-          "path": "enter_service",
+          "path": "article_details",
           "type": "page",
           "layout": "default",
           "style": {
-            "navigationBarTitleText": ""
+            "navigationBarTitleText": "文章详情"
           }
         },
         {
-          "path": "evaluate",
+          "path": "scenic_details",
           "type": "page",
           "layout": "default",
           "style": {
-            "navigationBarTitleText": ""
+            "navigationBarTitleText": "精选景点详情"
           }
         },
         {
-          "path": "received_order",
+          "path": "scenic_handpick",
           "type": "page",
           "layout": "default",
           "style": {
-            "navigationBarTitleText": ""
+            "navigationBarTitleText": "精选景点"
+          }
+        },
+        {
+          "path": "scenic_mine",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": "我的景点"
           }
         }
       ]
