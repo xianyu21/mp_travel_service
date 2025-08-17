@@ -62,9 +62,10 @@
     {
       "path": "pages/index",
       "type": "home",
+      "needLogin": false,
       "layout": "default",
       "style": {
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "首页"
       }
     },
     {
@@ -89,14 +90,6 @@
       "layout": "default",
       "style": {
         "navigationBarTitleText": ""
-      }
-    },
-    {
-      "path": "pages/travel",
-      "type": "page",
-      "layout": "default",
-      "style": {
-        "navigationStyle": "custom"
       }
     },
     {
@@ -138,12 +131,12 @@
       "root": "packages/public",
       "pages": [
         {
+          "path": "login copy",
+          "type": "page"
+        },
+        {
           "path": "login",
-          "type": "page",
-          "layout": "default",
-          "style": {
-            "navigationBarTitleText": "登录"
-          }
+          "type": "page"
         },
         {
           "path": "rich_text",
@@ -175,6 +168,30 @@
           }
         },
         {
+          "path": "enter_service",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        },
+        {
+          "path": "evaluate",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        },
+        {
+          "path": "received_order",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        },
+        {
           "path": "scenic_details",
           "type": "page",
           "layout": "default",
@@ -196,6 +213,14 @@
           "layout": "default",
           "style": {
             "navigationBarTitleText": "我的景点"
+          }
+        },
+        {
+          "path": "travel_guide",
+          "type": "page",
+          "layout": "default",
+          "style": {
+            "navigationBarTitleText": "游玩攻略"
           }
         }
       ]

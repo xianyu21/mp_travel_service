@@ -63,11 +63,7 @@ image {
   width: 100%;
   min-height: 100vh;
 }
-.bg-base-order {
-  background: linear-gradient(#5b97fb 0%, #fafafa 35%, #f6f6f6 100%);
-  width: 100%;
-  min-height: 100vh;
-}
+
 .bg-base-mine {
   background: linear-gradient(#b0e1ff 0%, #fafafa 30%, #f6f6f6 100%);
   width: 100%;

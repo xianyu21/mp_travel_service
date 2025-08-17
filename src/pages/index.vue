@@ -1,5 +1,6 @@
 <route lang="jsonc" type="home">
 {
+  "needLogin": false,
   "layout": "default",
   "style": {
     "navigationBarTitleText": "首页"
@@ -9,37 +10,58 @@
 
 <script lang="ts" setup>
 import { useMessage, useToast } from 'wot-design-uni'
-import { } from '@/api/index'
+import { offlineReceiveUser, onlineReceiveUser } from '@/api/index'
 import { useUserStore } from '@/store'
 import { back, go, reloadUrl } from '@/utils/tools'
 
 const toast = useToast()
 const message = useMessage()
 const userStore = useUserStore()
-const value1 = ref(false)
+const isOnline = ref(userStore?.userInfo?.isOnline)
+async function onlineChange({ value }) {
+  console.log('------------------------------')
+  console.log(value)
+  console.log('------------------------------')
+  if (value == -1) {
+    await offlineReceiveUser()
+    await userStore.getUserInfo()
+    toast.success('已下线！')
+  }
+  else if (value == 1) {
+    await onlineReceiveUser()
+    await userStore.getUserInfo()
+    toast.success('已上线！')
+  }
+}
+// 拨打紧急电话
+function callEmergencyPhone() {
+  if (!userStore.userInfo?.emergencyContactPhone) {
+    return toast.error('请先绑定紧急联系人号码！')
+  }
+  wx.makePhoneCall({
+    phoneNumber: userStore.userInfo.emergencyContactPhone,
+  })
+}
 </script>
 
 <template>
   <view class="bg-base-index">
     <wd-navbar
-      title="首页" custom-style="background-color: transparent !important;" :placeholder="true" :fixed="false" :bordered="false" :safe-area-inset-top="true"
+      title="首页" custom-style="background-color: transparent !important;" :placeholder="true" :fixed="false"
+      :bordered="false" :safe-area-inset-top="true"
     />
-    <view class="mx-[30rpx] mt-[30rpx] flex items-center justify-between gap-[30rpx]">
+    <view class="mx-[30rpx] mt-[30rpx] flex items-center justify-between gap-[30rpx]" @click="callEmergencyPhone">
       <view class="h-[100rpx] flex flex-1 items-center justify-between rounded-[20rpx] bg-[#fff] px-[30rpx]">
         <text class="text-[28rpx] text-[#000000] font-bold">
           紧急呼救
         </text>
-        <image
-          src="@img/img-008.png"
-          mode="scaleToFill"
-          class="h-[47.08rpx] w-[47.08rpx]"
-        />
+        <image src="@img/img-008.png" mode="scaleToFill" class="h-[47.08rpx] w-[47.08rpx]" />
       </view>
       <view class="h-[100rpx] flex flex-1 items-center justify-between rounded-[20rpx] bg-[#fff] px-[30rpx]">
         <text class="text-[28rpx] text-[#000000] font-bold">
-          {{ value1 ? '在线' : '下线' }}
+          {{ isOnline == 1 ? '在线' : '下线' }}
         </text>
-        <wd-switch v-model="value1" size="40rpx" />
+        <wd-switch v-model="isOnline" active-value="1" inactive-value="-1" size="40rpx" @change="onlineChange" />
       </view>
     </view>
     <view class="mx-[30rpx] mt-[30rpx] flex items-center justify-between gap-[30rpx] text-[#fff]">
@@ -162,11 +184,7 @@ const value1 = ref(false)
       <view v-for="(item, index) in 2" :key="index" class="h-[378rpx] rounded-[20rpx] bg-[#fff]">
         <view class="mx-[30rpx] mt-[30rpx] flex items-center justify-between">
           <view class="flex items-center gap-[10rpx]">
-            <image
-              src=""
-              mode="scaleToFill"
-              class="h-[32rpx] w-[32rpx] rounded-full bg-[#DC3A23]"
-            />
+            <image src="" mode="scaleToFill" class="h-[32rpx] w-[32rpx] rounded-full bg-[#DC3A23]" />
             <text class="text-[28rpx] text-[#000000] font-bold">
               冯宝宝
             </text>
@@ -179,11 +197,7 @@ const value1 = ref(false)
           </view>
         </view>
         <view class="mx-[30rpx] mt-[30rpx] flex items-center gap-[30rpx]">
-          <image
-            src=""
-            mode="scaleToFill"
-            class="h-[124rpx] w-[122rpx] rounded-[12rpx] bg-[#DC3A23]"
-          />
+          <image src="" mode="scaleToFill" class="h-[124rpx] w-[122rpx] rounded-[12rpx] bg-[#DC3A23]" />
           <view class="w-full flex-1">
             <view class="flex items-center justify-between text-[32rpx]">
               <text class="text-[#000000]">
@@ -215,10 +229,7 @@ const value1 = ref(false)
           >
             申请接单
           </view>
-          <view
-            v-if="index == 1"
-            class="text-[24rpx] text-[#FB2C41]"
-          >
+          <view v-if="index == 1" class="text-[24rpx] text-[#FB2C41]">
             00:05:24等待客户同意接单申请
           </view>
         </view>

@@ -188,4 +188,9 @@ function handleTabsChange() {
   //   background: #42cbff ;
   background: #fff !important;
 }
+.bg-base-order {
+  background: linear-gradient(#5b97fb 0%, #fafafa 35%, #f6f6f6 100%);
+  width: 100%;
+  min-height: 100vh;
+}
 </style>

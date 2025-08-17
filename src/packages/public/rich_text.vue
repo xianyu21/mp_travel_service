@@ -9,7 +9,7 @@
 
 <script lang="js" setup>
 import mpHtml from 'mp-html/dist/uni-app/components/mp-html/mp-html'
-import { getRichtext } from '@/api/index'
+import { } from '@/api/index'
 import { back } from '@/utils/tools'
 //
 const content = ref(null)
@@ -17,11 +17,11 @@ const content = ref(null)
 // @click="go('/packages/public/rich_text', { id: 2 })"
 onLoad(async (options) => {
   console.log(options)
-  const res = await getRichtext({
-    id: options.id,
-  })
-  console.log(res)
-  content.value = res.data.content
+  // const res = await getRichtext({
+  //   id: options.id,
+  // })
+  // console.log(res)
+  // content.value = res.data.content
 })
 </script>
 

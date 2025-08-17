@@ -13,6 +13,7 @@ export interface IUserInfoVo {
  */
 export interface IUserLogin {
   id: string
+  avatar: string
   username: string
   token: string
 }

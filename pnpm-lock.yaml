@@ -80,6 +80,9 @@ importers:
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      mp-html:
+        specifier: ^2.5.1
+        version: 2.5.1
       pinia:
         specifier: 2.0.36
         version: 2.0.36(typescript@5.7.2)(vue@3.5.15(typescript@5.7.2))
@@ -90,8 +93,8 @@ importers:
         specifier: ^3.4.21
         version: 3.5.15(typescript@5.7.2)
       wot-design-uni:
-        specifier: ^1.9.1
-        version: 1.9.1(vue@3.5.15(typescript@5.7.2))
+        specifier: ^1.11.1
+        version: 1.11.1(vue@3.5.15(typescript@5.7.2))
       z-paging:
         specifier: 2.8.7
         version: 2.8.7
@@ -231,6 +234,8 @@ importers:
       vue-tsc:
         specifier: ^2.2.10
         version: 2.2.10(typescript@5.7.2)
+
+  src/uni_modules/mp-html: {}
 
 packages:
 
@@ -4976,6 +4981,9 @@ packages:
   module-alias@2.2.3:
     resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
 
+  mp-html@2.5.1:
+    resolution: {integrity: sha512-7BEH8dnQ89kOIyjdoYni8zcc0QAg+lgEWg0n9or9q2D4l26JNG+KPzHfttDyisC/5S7aPBblpXrFTYQv475w/Q==}
+
   mrmime@2.0.1:
     resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
     engines: {node: '>=10'}
@@ -6332,8 +6340,8 @@ packages:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
 
-  wot-design-uni@1.9.1:
-    resolution: {integrity: sha512-bZBt6xt5HfvmHBm76BZWBrvthHKeK7cbR//bbmv2ICjPRLXvD9KKHGZDZrq6C/j+DXHzA4UbcGer3iE8XcuVkw==}
+  wot-design-uni@1.11.1:
+    resolution: {integrity: sha512-Pjfnz+4v0XDWvVJ/mkgVUzneOpB/WR0H+iD+Wt0hbELopuZhA1DzFvUsRA90cP/7sPsKiwiwKl3aXecG++4SkQ==}
     engines: {HBuilderX: ^3.8.7}
     peerDependencies:
       vue: '>=3.2.47'
@@ -12853,6 +12861,8 @@ snapshots:
 
   module-alias@2.2.3: {}
 
+  mp-html@2.5.1: {}
+
   mrmime@2.0.1: {}
 
   ms@2.0.0: {}
@@ -14247,7 +14257,7 @@ snapshots:
 
   word-wrap@1.2.5: {}
 
-  wot-design-uni@1.9.1(vue@3.5.15(typescript@5.7.2)):
+  wot-design-uni@1.11.1(vue@3.5.15(typescript@5.7.2)):
     dependencies:
       vue: 3.5.15(typescript@5.7.2)
 

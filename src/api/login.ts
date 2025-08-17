@@ -5,10 +5,8 @@ import { http } from '@/http/http'
  * 登录表单
  */
 export interface ILoginForm {
-  username: string
-  password: string
-  code: string
-  uuid: string
+  phone: string
+  messageCode: string
 }
 
 /**
@@ -24,21 +22,21 @@ export function getCode() {
  * @param loginForm 登录表单
  */
 export function login(loginForm: ILoginForm) {
-  return http.post<IUserLogin>('/user/login', loginForm)
+  return http.post<IUserLogin>('/receive/receiveUser/login', loginForm)
 }
 
 /**
  * 获取用户信息
  */
 export function getUserInfo() {
-  return http.get<IUserInfoVo>('/user/info')
+  return http.get<IUserInfoVo>('/receive/receiveUser/info')
 }
 
 /**
  * 退出登录
  */
 export function logout() {
-  return http.get<void>('/user/logout')
+  return http.get<void>('/receive/receiveUser/loginOut')
 }
 
 /**
