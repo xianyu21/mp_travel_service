@@ -9,14 +9,39 @@ export type CustomRequestOptions = UniApp.RequestOptions & {
   hideErrorToast?: boolean
 } & IUniUploadFileOptions // 添加uni.uploadFile参数类型
 
-// 请求基准地址
-const baseUrl = getEnvBaseUrl()
+// 黑名单接口列表，这些接口不需要显示错误提示
+const blacklistApis = [
+  '/api/user/check',
+  '/api/common/heartbeat',
+  '/travel/receiveUserPage',
+  '/spot/page',
+  '/service/detail',
+  '/receive/order/waitRobOrder',
+  '/receive/order/robbedOrder',
+]
 
-// 拦截器配置
+/**
+ * 判断接口是否在黑名单中
+ * @param url 接口地址
+ * @returns 是否在黑名单中
+ */
+export function isInBlacklist(url: string): boolean {
+  const apiPath = url.split('?')[0]
+  return blacklistApis.some(api => apiPath.includes(api))
+}
+const baseUrl = getEnvBaseUrl()
 const httpInterceptor = {
-  // 拦截前触发
   invoke(options: CustomRequestOptions) {
-    // 接口请求支持通过 query 参数配置 queryString
+    const userStore = useUserStore()
+    // 判断是否在黑名单中
+    const inBlacklist = isInBlacklist(options.url)
+    if (inBlacklist) {
+      if (options.data) {
+        options.data.provinceId = userStore.locationInfo.provinceId
+        options.data.cityId = userStore.locationInfo.cityId
+      }
+    }
+
     if (options.query) {
       const queryStr = stringifyQuery(options.query)
       if (options.url.includes('?')) {
@@ -52,7 +77,7 @@ const httpInterceptor = {
       ...options.header,
     }
     // 3. 添加 token 请求头标识
-    const userStore = useUserStore()
+
     const { token } = userStore.userInfo as unknown as IUserInfo
     if (token) {
       options.header.token = token

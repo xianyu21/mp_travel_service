@@ -9,13 +9,21 @@
 
 <script lang="ts" setup>
 import { useMessage, useToast } from 'wot-design-uni'
-// import { } from '@/api/index'
+import { getStatis } from '@/api/index'
 import { useUserStore } from '@/store'
 import { back, go, reloadUrl } from '@/utils/tools'
 
 const toast = useToast()
 const message = useMessage()
 const userStore = useUserStore()
+const statisInfo = ref({})
+onShow(() => {
+  getStatis().then((res) => {
+    if (res.code === 200) {
+      statisInfo.value = res.data || {}
+    }
+  })
+})
 </script>
 
 <template>
@@ -27,13 +35,13 @@ const userStore = useUserStore()
     <!--  -->
     <view class="mx-[30rpx] mt-[30rpx] flex items-center justify-between">
       <view class="flex items-center gap-[30rpx]">
-        <image src="" mode="scaleToFill" class="h-[120rpx] w-[120rpx] rounded-full bg-[#e6e7e6]" />
+        <image :src="userStore.userInfo.headUrl" mode="scaleToFill" class="h-[120rpx] w-[120rpx] rounded-full" />
         <view class="flex flex-col gap-[14rpx]">
           <text class="text-[32rpx] text-[#000000]">
-            冯宝宝
+            {{ userStore.userInfo.realName }}
           </text>
           <text class="text-[22rpx] text-[#747474]">
-            ID:4545454
+            ID: {{ userStore.userInfo.id }}
           </text>
         </view>
       </view>
@@ -57,16 +65,16 @@ const userStore = useUserStore()
       <view class="bg-001 flex flex-col px-[30rpx] text-[#fff]">
         <view class="mt-[30rpx]">
           <text class="text-[24rpx]">
-            钱包余额（元）
+            佣金余额（元）
           </text>
           <image src="@img/img-009.png" mode="scaleToFill" class="ml-[10rpx] h-[16.12rpx] w-[25.1rpx]" />
         </view>
         <text class="mt-[14rpx] text-[54rpx] font-bold" @click="go('/packages/mine/balance')">
-          15635.00
+          {{ userStore.userInfo?.commission }}
         </text>
         <view class="mt-[24rpx] flex items-center justify-between text-[24rpx]">
-          <text>今日收益 15646.00</text>
-          <text>累计收益 115646.00</text>
+          <text>今日收益 {{ statisInfo.todayCommission }}</text>
+          <text>累计收益 {{ statisInfo.totalCommisstion }}</text>
         </view>
       </view>
     </view>
@@ -100,12 +108,12 @@ const userStore = useUserStore()
             推广赚钱
           </text>
         </view>
-        <view class="flex flex-col items-center" @click="go('/packages/mine/bank_management')">
+        <!-- <view class="flex flex-col items-center" @click="go('/packages/mine/bank_management')">
           <image src="@img/img-011.png" mode="scaleToFill" class="h-[48rpx] w-[46rpx]" />
           <text class="mt-[10rpx] text-[24rpx] text-[#000000]">
             银行卡管理
           </text>
-        </view>
+        </view> -->
         <view class="flex flex-col items-center" @click="go('/packages/mine/entry_information')">
           <image src="@img/img-012.png" mode="scaleToFill" class="h-[48rpx] w-[46rpx]" />
           <text class="mt-[10rpx] text-[24rpx] text-[#000000]">

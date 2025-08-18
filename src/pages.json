@@ -69,6 +69,14 @@
       }
     },
     {
+      "path": "pages/dd",
+      "type": "page",
+      "layout": "default",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    },
+    {
       "path": "pages/mine",
       "type": "page",
       "layout": "default",
@@ -273,7 +281,7 @@
           "type": "page",
           "layout": "default",
           "style": {
-            "navigationBarTitleText": "我的余额"
+            "navigationBarTitleText": "申请提现"
           }
         },
         {

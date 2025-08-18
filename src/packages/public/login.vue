@@ -51,42 +51,42 @@ async function getVerificationCode() {
 
 const isCheck = ref(false)
 async function onSubmit() {
-  console.log('------------------------------')
-  console.log('11')
-  console.log('------------------------------')
-  go({
-    type: 'switchTab',
-    url: '/pages/index',
-  })
-  // if (!phoneNumber.value || !verificationCode.value || !isCheck.value) {
-  //   uni.showToast({
-  //     title: '请填写完整信息并同意用户协议',
-  //     icon: 'none',
-  //   })
-  //   return
-  // }
-  // const res = await login({
-  //   phone: phoneNumber.value,
-  //   messageCode: verificationCode.value,
+  // console.log('------------------------------')
+  // console.log('11')
+  // console.log('------------------------------')
+  // go({
+  //   type: 'switchTab',
+  //   url: '/pages/index',
   // })
-  // console.log('------------------------------')
-  // console.log(res)
-  // console.log('------------------------------')
-  // if (res.code === 200) {
-  //   uni.showToast({
-  //     title: '登录成功',
-  //     icon: 'success',
-  //   })
-  //   userStore.setUserInfo(res.data)
-  //   uni.setStorageSync('userInfo', res.data)
-  //   uni.setStorageSync('token', res.data.token)
-  //   setTimeout(() => {
-  //     // 登录成功后跳转到首页
-  //     uni.switchTab({
-  //       url: '/pages/index',
-  //     })
-  //   }, 1000)
-  // }
+  if (!phoneNumber.value || !verificationCode.value || !isCheck.value) {
+    uni.showToast({
+      title: '请填写完整信息并同意用户协议',
+      icon: 'none',
+    })
+    return
+  }
+  const res = await login({
+    phone: phoneNumber.value,
+    messageCode: verificationCode.value,
+  })
+  console.log('------------------------------')
+  console.log(res)
+  console.log('------------------------------')
+  if (res.code === 200) {
+    uni.showToast({
+      title: '登录成功',
+      icon: 'success',
+    })
+    userStore.setUserInfo(res.data)
+    uni.setStorageSync('userInfo', res.data)
+    uni.setStorageSync('token', res.data.token)
+    setTimeout(() => {
+      // 登录成功后跳转到首页
+      uni.switchTab({
+        url: '/pages/index',
+      })
+    }, 1000)
+  }
 }
 
 function wechatLogin() {

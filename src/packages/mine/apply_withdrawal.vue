@@ -9,7 +9,8 @@
 
 <script lang="ts" setup>
 import { useMessage, useToast } from 'wot-design-uni'
-// import {  } from '@/api/index'
+import { getDrawApply } from '@/api/index'
+import PaymentPicker from '@/components/PaymentPicker.vue'
 import { useUserStore } from '@/store'
 import { back, go, reloadUrl } from '@/utils/tools'
 
@@ -20,6 +21,7 @@ const userStore = useUserStore()
 // 提现表单数据
 const withdrawalData = ref({
   amount: '', // 提现金额
+  payType: 1,
   bankCard: {
     bankName: '建设银行储蓄卡',
     cardNumber: '9943',
@@ -58,7 +60,7 @@ function selectBankCard() {
 }
 
 // 提交申请
-function submitWithdrawal() {
+async function submitWithdrawal() {
   // 表单验证
   if (!withdrawalData.value.amount) {
     toast.error('请输入提现金额')
@@ -68,115 +70,70 @@ function submitWithdrawal() {
   const amount = Number.parseFloat(withdrawalData.value.amount)
 
   if (amount < 100) {
-    toast.error('最低提现金额为¥100.00')
-    return
+    return toast.error('最低提现金额为¥100.00')
   }
 
   if (amount > 10000) {
-    toast.error('单次最高提现金额为¥10000.00')
-    return
+    return toast.error('单次最高提现金额为¥10000.00')
   }
-
-  // 计算手续费
-  const fee = amount * 0.1
-  const actualAmount = amount - fee
-
-  // 确认提现
-  message.confirm(
-    `确认提现¥${amount.toFixed(2)}吗？\n手续费：¥${fee.toFixed(2)}\n实际到账：¥${actualAmount.toFixed(2)}`,
+  const ret = await message.confirm(
+    `确认提现¥${amount.toFixed(2)}吗？`,
   )
-    .then(() => {
-      // 实际项目中应该调用API提交提现申请
-      toast.success('提现申请已提交，请等待审核')
-      setTimeout(() => {
-        back()
-      }, 1500)
+  if (ret.action == 'confirm') {
+    const res = await getDrawApply({
+      amount,
+      payType: withdrawalData.value.payType,
     })
-    .catch(() => {})
+    toast.success('提现申请已提交，请等待审核')
+    setTimeout(() => {
+      back()
+    }, 1500)
+  }
+  console.log('------------------------------')
+  console.log(ret)
+  console.log('------------------------------')
 }
 </script>
 
 <template>
   <view class="min-h-screen bg-[#f5f5f5] pb-[200rpx]">
     <wd-navbar
-      title="申请提现"
-      custom-style="background-color: transparent !important;"
-      left-arrow
-      :placeholder="true"
-      :fixed="false"
-      :bordered="false"
-      :safe-area-inset-top="true"
-      @click-left="back"
+      title="申请提现" custom-style="background-color: transparent !important;" left-arrow :placeholder="true"
+      :fixed="false" :bordered="false" :safe-area-inset-top="true" @click-left="back"
     />
 
     <!-- 提现金额输入 -->
     <view class="mx-[30rpx] mt-[30rpx] rounded-[20rpx] bg-white p-[30rpx]">
-      <view class="mb-[20rpx] text-[32rpx] text-[#333]">
+      <view class="mb-[20rpx] text-[28rpx] text-[#0B0B0B]">
         提现金额
       </view>
-
       <view class="flex items-center">
         <text class="mr-[10rpx] text-[60rpx] text-[#333]">
           ¥
         </text>
         <input
-          v-model="withdrawalData.amount"
-          type="digit"
-          placeholder="0.00"
-          class="flex-1 text-[60rpx] text-[#333]"
+          v-model="withdrawalData.amount" type="digit" placeholder="0.00" class="flex-1 text-[60rpx] text-[#333]"
           @input="onAmountInput"
         >
       </view>
-
-      <view class="mt-[20rpx] text-[28rpx] text-[#4facfe]">
+      <view class="mt-[20rpx] text-[24rpx] text-[#356BFE]">
         需达到¥100.00及以上可申请提现
       </view>
     </view>
-
-    <!-- 银行卡选择 -->
-    <view class="mx-[30rpx] mt-[30rpx] rounded-[20rpx] bg-white p-[30rpx]" @click="selectBankCard">
-      <view class="flex items-center justify-between">
-        <view class="flex items-center">
-          <!-- 银行图标 -->
-          <view class="mr-[20rpx] h-[60rpx] w-[60rpx] flex items-center justify-center rounded-full bg-[#4facfe]">
-            <text class="text-[24rpx] text-white font-medium">
-              建设
-            </text>
-          </view>
-
-          <!-- 银行卡信息 -->
-          <view>
-            <text class="block text-[32rpx] text-[#333]">
-              {{ withdrawalData.bankCard.bankName }} ({{ withdrawalData.bankCard.cardNumber }})
-            </text>
-          </view>
-        </view>
-
-        <!-- 选中状态 -->
-        <view class="h-[40rpx] w-[40rpx] flex items-center justify-center rounded-full bg-[#4facfe]">
-          <text class="text-[20rpx] text-white">
-            ✓
-          </text>
-        </view>
-      </view>
-    </view>
-
+    <!--  -->
+    <PaymentPicker v-model="withdrawalData.payType" />
     <!-- 提现须知 -->
-    <view class="mx-[30rpx] mt-[30rpx] rounded-[20rpx] bg-white p-[30rpx]">
-      <view class="mb-[20rpx] text-[32rpx] text-[#333] font-medium">
+    <view class="mx-[30rpx] mt-[30rpx] rounded-[20rpx] p-[30rpx]">
+      <view class="mb-[20rpx] text-[30rpx] text-[#666666] font-medium">
         提现须知
       </view>
 
       <view class="space-y-[15rpx]">
-        <view
-          v-for="(rule, index) in withdrawalRules"
-          :key="index"
-          class="flex items-start"
-        >
-          <text class="mr-[10rpx] text-[28rpx] text-[#666]">
+        <view v-for="(rule, index) in withdrawalRules" :key="index" class="flex items-start">
+          <text class="mr-[10rpx] text-[28rpx] text-[#999999]">
             {{ index + 1 }}.
           </text>
-          <text class="flex-1 text-[28rpx] text-[#666] leading-[40rpx]">
+          <text class="flex-1 text-[28rpx] text-[#999999] leading-[40rpx]">
             {{ rule }}
           </text>
         </view>
@@ -187,8 +144,7 @@ function submitWithdrawal() {
     <view class="fixed bottom-[40rpx] left-[30rpx] right-[30rpx]">
       <view
         class="h-[90rpx] flex items-center justify-center rounded-[45rpx] text-[32rpx] text-white"
-        style="background: linear-gradient(106deg, #078af3 0%, #0668eb 100%);"
-        @click="submitWithdrawal"
+        style="background: linear-gradient(106deg, #078af3 0%, #0668eb 100%);" @click="submitWithdrawal"
       >
         提交申请
       </view>
