@@ -21,7 +21,7 @@ const props = defineProps({
     default: () => ({}),
   },
   tabIndex: {
-    type: String,
+    type: Number,
     default: '',
   },
 })
@@ -76,17 +76,9 @@ function getOrderStatus(order) {
 }
 // 1待支付 2支付成功  -2支付失败 3待接单 4已接单 5已出发 6已到达 7服务中 8服务完成 9退款中 10退款完成
 const strategies = {
-  1: '待支付',
-  2: '支付成功',
-  3: '待接单',
-  4: '已接单',
-  5: '已出发',
-  6: '已到达',
-  7: '服务中',
-  8: '服务完成',
-  9: '退款中',
-  10: '退款完成',
-  default: '支付失败',
+  0: '已抢单',
+  1: '已同意',
+  default: '已拒绝',
 }
 </script>
 
@@ -103,7 +95,7 @@ const strategies = {
         </text>
       </view>
       <view v-if="tabIndex === 1" class="text-[28rpx] text-[#0678EE]">
-        {{ strategies[order?.status] || strategies.default }}
+        {{ strategies[order?.applyStatus] || strategies.default }}
       </view>
     </view>
     <view class="mt-[30rpx] flex items-center gap-[30rpx]">
@@ -124,15 +116,15 @@ const strategies = {
     </view>
     <wd-divider color="#F6F6F6" />
     <view class="flex items-center justify-between gap-[30rpx]">
-      <view class="flex items-center">
-        <text class="text-[24rpx] text-[#002C4F]">
+      <view class="flex">
+        <text class="pt-[10rpx] text-[24rpx] text-[#002C4F]">
           实付款
         </text>
         <text class="text-price text-[36rpx] text-[#DC3A23]">
           {{ order?.actualPay }}
         </text>
       </view>
-      <view class="flex flex-1 flex-wrap items-center justify-end gap-[20rpx]">
+      <view v-if="tabIndex === 0" class="flex flex-1 flex-wrap items-center justify-end gap-[20rpx]">
         <view
           class="h-[54rpx] w-[140rpx] rounded-[198rpx] text-center text-[28rpx] text-[#fff] leading-[54rpx]"
           style="background: linear-gradient( 106deg, #078AF3 0%, #0668EB 100%);"

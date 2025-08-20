@@ -74,6 +74,10 @@ export function getOrderList(data) {
 export function getOrderDetail(data) {
   return http.post('/receive/order/orderDetail', data)
 }
+// 服务列表 所有
+export function getServiceList() {
+  return http.post('/service/list')
+}
 // 独有
 // 完善入驻信息
 export function updateBaseInfo(data) {
