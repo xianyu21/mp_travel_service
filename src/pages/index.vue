@@ -17,25 +17,25 @@ import { back, go, reloadUrl } from '@/utils/tools'
 const toast = useToast()
 const message = useMessage()
 const userStore = useUserStore()
-const isOnline = ref(userStore?.userstatisInfo?.isOnline)
+const isOnline = ref(userStore?.userInfo?.isOnline)
+const statisInfo = ref({})
+const paging = ref(null)
+const dataList = ref([])
 async function onlineChange({ value }) {
-  console.log('------------------------------')
-  console.log(value)
-  console.log('------------------------------')
-  // if (value === -1) {
-  //   await offlineReceiveUser()
-  //   await userStore.getUserInfo()
-  //   toast.success('已下线！')
-  // }
-  // else if (value === 1) {
-  //   await onlineReceiveUser()
-  //   await userStore.getUserInfo()
-  //   toast.success('已上线！')
-  // }
+  if (value === -1) {
+    await offlineReceiveUser()
+    await userStore.getUserInfo()
+    toast.success('已下线！')
+  }
+  else if (value === 1) {
+    await onlineReceiveUser()
+    await userStore.getUserInfo()
+    toast.success('已上线！')
+  }
 }
 // 拨打紧急电话
 function callEmergencyPhone() {
-  if (!userStore.userstatisInfo?.emergencyContactPhone) {
+  if (!userStore.userInfo?.emergencyContactPhone) {
     return toast.error('请先绑定紧急联系人号码！')
   }
   wx.makePhoneCall({
@@ -47,16 +47,16 @@ onLoad(() => {
 
 })
 
-const statisInfo = ref({})
 onShow(() => {
   getStatis().then((res) => {
     if (res.code === 200) {
       statisInfo.value = res.data || {}
     }
   })
+  nextTick(() => {
+    paging.value.reload()
+  })
 })
-const paging = ref(null)
-const dataList = ref([])
 
 const tabIndex = ref(0)
 function tabChange(e) {
@@ -81,9 +81,6 @@ async function queryList(pageNo, pageSize) {
   }
 }
 function handleApply(item) {
-  console.log('------------------------------')
-  console.log(item)
-  console.log('------------------------------')
   getRobApply({
     orderNo: item?.orderNo,
   }).then((res) => {
@@ -97,16 +94,18 @@ function handleApply(item) {
 
 <template>
   <view class="bg-base-index">
-    <z-paging ref="paging" v-model="dataList" @query="queryList">
+    <z-paging ref="paging" v-model="dataList" :auto="false" @query="queryList">
       <template #top>
         <wd-navbar
-          title="首页" custom-style="background-color: transparent !important;" :placeholder="true" :fixed="false"
-          :bordered="false" :safe-area-inset-top="true"
+          title="首页" custom-style="background-color: transparent !important;" :placeholder="true"
+          :fixed="false" :bordered="false" :safe-area-inset-top="true"
         />
       </template>
-
       <view class="mx-[30rpx] mt-[30rpx] flex items-center justify-between gap-[30rpx]">
-        <view class="h-[100rpx] flex flex-1 items-center justify-between rounded-[20rpx] bg-[#fff] px-[30rpx]" @click="callEmergencyPhone">
+        <view
+          class="h-[100rpx] flex flex-1 items-center justify-between rounded-[20rpx] bg-[#fff] px-[30rpx]"
+          @click="callEmergencyPhone"
+        >
           <text class="text-[28rpx] text-[#000000] font-bold">
             紧急呼救
           </text>
@@ -156,7 +155,7 @@ function handleApply(item) {
           </text>
           <view class="flex gap-[20rpx] text-[24rpx] text-[#9E9E9E]">
             <text>今日订单</text>
-            <text>  {{ statisInfo?.receivedCount || 0 }}</text>
+            <text> {{ statisInfo?.receivedCount || 0 }}</text>
           </view>
         </view>
         <view class="grid grid-cols-3 grid-rows-2 mt-[26rpx] gap-[30rpx]">
@@ -203,25 +202,29 @@ function handleApply(item) {
         </view>
       </view>
       <view class="mx-[30rpx] mt-[30rpx] flex items-center gap-[42rpx]">
-        <view class="relative text-[32rpx]" :class="tabIndex === 0 ? ' text-line text-[#000000] font-bold' : 'text-[#8C8C8C]'" @click="tabChange(0)">
+        <view
+          class="relative text-[32rpx]"
+          :class="tabIndex === 0 ? ' text-line text-[#000000] font-bold' : 'text-[#8C8C8C]'" @click="tabChange(0)"
+        >
           待抢单
           <wd-tag type="danger" custom-class="absolute top-[-25%] right-[-30%] ">
             {{ total || 0 }}
           </wd-tag>
         </view>
-        <view class="text-[32rpx]" :class="tabIndex === 1 ? 'relative text-line text-[#000000] font-bold' : 'text-[#8C8C8C]'" @click="tabChange(1)">
+        <view
+          class="text-[32rpx]"
+          :class="tabIndex === 1 ? 'relative text-line text-[#000000] font-bold' : 'text-[#8C8C8C]'"
+          @click="tabChange(1)"
+        >
           待同意
-        <!-- <wd-tag type="danger" custom-class="absolute top-[-25%] right-[-30%] ">
+          <!-- <wd-tag type="danger" custom-class="absolute top-[-25%] right-[-30%] ">
           1
         </wd-tag> -->
         </view>
       </view>
       <view class="mx-[30rpx] mt-[30rpx] flex flex-col gap-[30rpx]">
         <ol-order-item-v2
-          v-for="item in dataList"
-          :key="item.id"
-          :order="item"
-          :tab-index="tabIndex"
+          v-for="item in dataList" :key="item.id" :order="item" :tab-index="tabIndex"
           @apply="handleApply"
         />
       </view>
