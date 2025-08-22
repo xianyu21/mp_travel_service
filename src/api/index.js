@@ -78,6 +78,10 @@ export function getOrderDetail(data) {
 export function getServiceList() {
   return http.post('/service/list')
 }
+// 评价列表
+export function getTraveCommentList(data) {
+  return http.post('/receive/receiveUser/evaluationPage', data)
+}
 // 独有
 // 完善入驻信息
 export function updateBaseInfo(data) {
